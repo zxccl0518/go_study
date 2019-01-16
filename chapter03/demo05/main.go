@@ -18,6 +18,8 @@ func main() {
 	stringValue_1 := "想知道这种写法是不是自动类型解析。 := 1"
 	fmt.Println("value = ", stringValue_1)
 
-	var stringValue_2 = "看看这个 value2的 写法方式 是不是可行。"
+	// 结论是，这种写法的方式也是可行的，但是不推荐。
+	// var stringValue_2 = "看看这个 value2的 写法方式 是不是可行。"
+	var stringValue_2 string = "看看这个 value2的 写法方式 是不是可行。"
 	fmt.Println("value = ", stringValue_2)
 }
