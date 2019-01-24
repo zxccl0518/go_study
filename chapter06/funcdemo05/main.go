@@ -23,9 +23,9 @@ func getSumAndSub(n1 int, n2 int) (sum int, sub int) {
 }
 
 // 案例演示，编写一个函数sum，可以求出 1 到多个int的和。
-func sumArgs(n1 int, args ...int) sum int {
+func sumArgs(n1 int, args ...int) (sum int) { // 如果采用自定义返回值的方法，要将返回值 和 类型 括起来。
 	// func sumArgs(n1 int, args ...int) int {
-	sum := n1
+	sum = n1
 	// 迭代器的方式遍历
 	// for index, val := range args {
 	// 	fmt.Printf("index = %v, agrs = %v \n", index, val)
