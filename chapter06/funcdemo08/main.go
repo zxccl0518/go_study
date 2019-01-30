@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // defer 演示函数
 func sum(n1 int, n2 int) int {
