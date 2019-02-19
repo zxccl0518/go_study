@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 func main() {
 	//1) 创建一个byte类型的26个元素的数组，分别放置'A' - 'Z'
@@ -38,8 +42,26 @@ func main() {
 	avarageValue := float64(sum) / float64(len(intArr2))
 	fmt.Printf("sum = %v, avarageValue = %v\n", sum, avarageValue)
 
-	// 随机输入5个数，并将其翻转打印。
-	// 当我们德大随机数后，就放到一个数组中。 int数组。
-	// 翻转打印。
+	// 随机生成5个数，并将其翻转打印。
+	// rand.Intn()
+	// 当我们得到随机数后，就放到一个数组中。 int数组。
+	// 翻转打印。交换的次数是 len/2,倒数第一个和第一个元素交换，倒数第二个和第二个元素交换。 以此类推。。
 
+	// 为了每次，随机出来的随机数不一致，给随机数喂一个时间的种子。
+	rand.Seed(time.Now().UnixNano())
+	var intArr3 [5]int
+	for i := 0; i < len(intArr3); i++ {
+		intArr3[i] = rand.Intn(100)
+	}
+	fmt.Println("交换前，intArr3 = ", intArr3)
+
+	// 将数组位置调整，倒序排列
+	temp := 0 // 作为临时变量。
+	intArrLen := len(intArr3)
+	for i := 0; i < intArrLen/2; i++ {
+		temp = intArr3[intArrLen-1-i]
+		intArr3[intArrLen-1-i] = intArr3[i]
+		intArr3[i] = temp
+	}
+	fmt.Println("交换后，intArr3 = ", intArr3)
 }
