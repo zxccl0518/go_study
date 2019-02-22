@@ -64,7 +64,7 @@ func main() {
 	// map是一个引用，如果有另一个引用 引用了map 的地址，那么，另一个引用发起的改动， 也会影响map的值。
 	s := dict[0]
 	s.ID = 9999
-	fmt.Println("dict[0]", dict[0]) // s引用变量的改动 影响了map的值。
+	fmt.Println("dict[0]", dict[0]) // 引用变量的改动 影响了map的值。
 
 	// 判断map 键值 是否存在。
 	if v, ok := dict[0]; ok {
