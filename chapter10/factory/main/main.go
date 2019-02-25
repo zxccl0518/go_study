@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/zxccl0518/Go_dev/chapter10/factory/main/model"
+	"github.com/zxccl0518/go_study/chapter10/factory/main/model"
 )
 
 func main() {
