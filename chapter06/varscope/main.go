@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	gutils "github.com/zxccl0518/Go_dev/chapter06/globalutils"
+	gutils "github.com/zxccl0518/go_study/chapter06/globalutils"
 )
 
 // 函数外部声明/定义的变量叫做全局变量。
