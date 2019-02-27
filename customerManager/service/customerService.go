@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/zxccl0518/go_study/customerManager/model"
 )
 
@@ -24,8 +22,32 @@ func NewCustomerService() *CustomerService {
 	return &customService
 }
 
-func (this *CustomerService) List() {
-	for _, v := range this.customers {
-		fmt.Println(v)
+// 返回客户列表的一个切片
+func (this *CustomerService) List() []model.Customer {
+	// for _, v := range this.customers {
+	// 	fmt.Println(v)
+	// }
+	return this.customers
+}
+
+// 增加一个新用户
+func (this *CustomerService) AddCustomer(cus model.Customer) {
+	this.customerNum++
+	cus.Id = this.customerNum
+	this.customers = append(this.customers, cus)
+}
+
+// 删除客户
+func (this *CustomerService) DeleteCustomer(id int) {
+	this.customers = append(this.customers[:id], this.customers[id+1:]...)
+}
+
+// 根据id 查找客户
+func (this *CustomerService) FindById(id int) int {
+	for k, v := range this.customers {
+		if v.Id == id {
+			return k
+		}
 	}
+	return -1
 }
