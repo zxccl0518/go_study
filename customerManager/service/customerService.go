@@ -42,6 +42,15 @@ func (this *CustomerService) DeleteCustomer(id int) {
 	this.customers = append(this.customers[:id], this.customers[id+1:]...)
 }
 
+// 修改客户信息
+func (this *CustomerService) UpdateCustomer(cus model.Customer, index int) {
+	this.customers[index].Name = cus.Name
+	this.customers[index].Gender = cus.Gender
+	this.customers[index].Age = cus.Age
+	this.customers[index].Phone = cus.Phone
+	this.customers[index].Email = cus.Email
+}
+
 // 根据id 查找客户
 func (this *CustomerService) FindById(id int) int {
 	for k, v := range this.customers {

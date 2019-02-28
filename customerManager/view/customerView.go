@@ -48,6 +48,7 @@ func (this *customerView) add() {
 	this.customerService.AddCustomer(cus)
 }
 
+// 删除用户
 func (this *customerView) delete() {
 	fmt.Print("请输入 要删除用户的id：")
 	var id = 0
@@ -63,6 +64,59 @@ func (this *customerView) delete() {
 			this.customerService.DeleteCustomer(res)
 		} else {
 			fmt.Println("取消删除 成功")
+		}
+	}
+}
+
+// 修改客户信息。
+func (this *customerView) update() {
+	fmt.Print("请输入 要修改客户的id:")
+	var numId = 0
+	fmt.Scanln(&numId)
+	res := this.customerService.FindById(numId)
+	if res == -1 {
+		fmt.Println("您 输入的用户的id有误，修改用户信息失败。")
+	} else {
+		customers := this.customerService.List()
+		customerInfo := customers[res].GetInfo()
+		fmt.Println("Id\tName\tGender\tAge\tPhone\tEmail")
+		fmt.Println(customerInfo)
+		fmt.Println("请输入 新的姓名:")
+		var name = ""
+		fmt.Scanln(&name)
+		fmt.Println("请输入 新的性别:")
+		var gender = ""
+		fmt.Scanln(&gender)
+		fmt.Println("请输入 新的年龄:")
+		var age = 0
+		fmt.Scanln(&age)
+		fmt.Println("请输入 新的电话:")
+		var phone = ""
+		fmt.Scanln(&phone)
+		fmt.Println("请输入 新的电邮:")
+		var email = ""
+		fmt.Scanln(&email)
+
+		newCustomer := model.NewCustomer1(name, gender, age, phone, email)
+		this.customerService.UpdateCustomer(newCustomer, res)
+	}
+}
+
+// 退出管理系统
+func (this *customerView) exit() {
+	fmt.Println("退出 请输入y, 取消退出请输入n 其他键无效。")
+	var key = ""
+	for {
+		fmt.Scanln(&key)
+		if key == "y" || key == "Y" {
+			this.loop = false
+			break
+		} else if key == "n" || key == "N" {
+			this.loop = true
+			fmt.Println("您 取消退出成功， 请继续操作。")
+			break
+		} else {
+			fmt.Println("您的 输入有误，请重新输入 y or n ")
 		}
 	}
 }
@@ -84,7 +138,7 @@ func (this *customerView) mainMenu() {
 			fmt.Println("添加客户")
 			this.add()
 		case "2":
-			fmt.Println("修改客户")
+			this.update()
 		case "3":
 			fmt.Println("删除客户")
 			this.delete()
@@ -92,8 +146,7 @@ func (this *customerView) mainMenu() {
 			fmt.Println("客户列表")
 			this.list()
 		case "5":
-			fmt.Println("退出")
-			this.loop = false
+			this.exit()
 		default:
 			fmt.Println("您输入有误。")
 		}
