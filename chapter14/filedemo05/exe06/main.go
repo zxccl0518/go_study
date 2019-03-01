@@ -29,16 +29,41 @@ func copy(destFileName string, srcFileName string) (written int64, err error) {
 	return io.Copy(writer, reader)
 }
 
+// 判断文件存在或者是文件夹是否存在。
+func PathExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+
+	return false, err
+}
+
 func main() {
 	// 将 d：test。txt 文件拷贝到 d:/QMDownload/中
-	srcFile := "d:/123.jpg"
-	destFile := "d:/QMDownload/456.jpg"
+	srcFile := "e:/abc.txt"
+	destFile := "e:/456.txt"
 
 	len, err := copy(destFile, srcFile)
 
 	if err != nil {
-		fmt.Println("拷贝失败")
+		fmt.Println("拷贝失败 err = ", err)
 	} else {
 		fmt.Println("拷贝成功 len = ", len)
+	}
+
+	isExist, err := PathExists(srcFile)
+	if isExist == true {
+		fmt.Println(srcFile, "文件 是存在的。")
+	} else {
+		if err == nil {
+			fmt.Println(srcFile, "文件 是 不存在的。")
+		} else {
+			fmt.Println(srcFile, "文件 是 不存在的。 err = ", err)
+		}
 	}
 }
