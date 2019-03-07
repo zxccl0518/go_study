@@ -2,6 +2,9 @@ package main
 
 import "fmt"
 
+type Cat struct {
+}
+
 func main() {
 	// 演示一下管道的使用
 	// 1.创建一个可以存放3个int类型的管道
@@ -26,8 +29,14 @@ func main() {
 
 	//在没有使用 协程的情况下，如过我们的管道数据已经全部取出，再去就会报告deadlock
 
-	// num3 := <-intChan
+	num3 := <-intChan
 	// num4 := <-intChan
 	// fmt.Println("num 3 = ", num3, "  < --- > num4 = ", num4) //没有内容继续取 报错： fatal error: all goroutines are asleep - deadlock!
 
+	// 被断言的变量 是接口类型，或者是非接口类型，但是实现了 类型的接口。
+	var value interface{}
+	value = num3
+	if v, ok := value.(int); ok {
+		fmt.Printf("value 类型是%T,  int v = %v\n", v, v)
+	}
 }
