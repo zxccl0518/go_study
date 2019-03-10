@@ -39,7 +39,7 @@ func reflectTest02(b interface{}) {
 	// 通过反射获取的传入的变量 的type，kind，值
 	//1.先获取到reflect.Type
 	rType := reflect.TypeOf(b)
-	fmt.Println("rType = ", rType)
+	fmt.Println("rType = ", rType, " rType = ", rType.Kind())
 
 	// 2.获取到reflect.Value
 	rValue := reflect.ValueOf(b)
