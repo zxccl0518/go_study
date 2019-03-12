@@ -27,10 +27,13 @@ func reflectTest01(b interface{}) {
 	fmt.Println(" num2 = ", num2)
 }
 
+// 学生结构体
 type Student struct {
 	Name string
 	Age  int
 }
+
+// monster 结构体
 type Monster struct {
 }
 
