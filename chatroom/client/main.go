@@ -21,7 +21,7 @@ func main() {
 			fmt.Println("请输入 用户密码：")
 			fmt.Scanf("%s\n", &userPwd)
 			err := login(userID, userPwd)
-			if err != nil {
+			if err == 200 {
 				fmt.Println("登录失败 err = ", err)
 			} else {
 				fmt.Println("登录成功 err = ", err)
