@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/binary"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net"
 
@@ -11,7 +10,7 @@ import (
 )
 
 // 用户登录函数
-func login(userID string, userPwd string) error {
+func login(userID string, userPwd string) (err error) {
 	conn, err := net.Dial("tcp", "0.0.0.0:8887")
 	if err != nil {
 		fmt.Println("拨号，连接服务器失败 err = ", err)
@@ -58,23 +57,39 @@ func login(userID string, userPwd string) error {
 		return err
 	}
 
-	// 接收 服务器端发回来的 对于登录信息的教研结果。
-	var resData = make([]byte, 1024)
-	n, err = conn.Read(resData)
+	// // 接收 服务器端发回来的 对于登录信息的教研结果。
+	// var resData = make([]byte, 1024)
+	// n, err = conn.Read(resData)
+	// if err != nil {
+	// 	fmt.Println("读取 服务器返回的数据失败 err = ", err)
+	// 	return err
+	// }
+	// var loginResMes message.LoginResMessage
+	// err = json.Unmarshal(resData[:n], &loginResMes)
+	// if err != nil {
+	// 	fmt.Println("反序列化 服务器返回的消息 shibai  err = ", err)
+	// 	return err
+	// }
+	// loginResMes.Print()
+
+	// if loginResMes.Code == 200 {
+	// 	return errors.New("200")
+	// }
+
+	mes, err = readPkg(conn)
 	if err != nil {
-		fmt.Println("读取 服务器返回的数据失败 err = ", err)
-		return err
+		fmt.Println(" 读取数据cuowu ")
+		return
 	}
+
+	// 将mes的data 部分反序列化成LoginResMes
 	var loginResMes message.LoginResMessage
-	err = json.Unmarshal(resData[:n], &loginResMes)
-	if err != nil {
-		fmt.Println("反序列化 服务器返回的消息 shibai  err = ", err)
-		return err
-	}
-
+	err = json.Unmarshal([]byte(mes.Data), &loginResMes)
 	if loginResMes.Code == 200 {
-		return errors.New("200")
+		fmt.Println("登录成功 login err = ", err)
+	} else {
+		fmt.Println("登录失败 loginResMes.Error = ", err)
 	}
 
-	return errors.New("500")
+	return
 }

@@ -5,6 +5,7 @@ import "fmt"
 const (
 	LoginMesType    = "loginType"
 	LoginResMesType = "loginResType"
+	RigisterMesType = "rigisterType"
 )
 
 type Message struct {
@@ -19,8 +20,11 @@ type LoginMessage struct {
 }
 
 type LoginResMessage struct {
-	Code int   `json:"code"`
-	Err  error `json:"err"`
+	Code int    `json:"code"`
+	Err  string `json:"err"`
+}
+
+type RigesterMes struct {
 }
 
 func (mes Message) Print() {
