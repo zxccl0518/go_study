@@ -2,32 +2,29 @@ package main
 
 import "fmt"
 
-var userID int
-var userPwd string
-var userName string
-
 func main() {
-	// 接收 用户的选择。
 	var key int
+	var userID string
+	var userPwd string
+
 	for {
-		fmt.Println("-----------------------欢迎登录多人聊天室-----------------------")
-		fmt.Println("-----------------------1.登录聊天室----------------------------")
-		fmt.Println("-----------------------2.注册用户----------------------------")
-		fmt.Println("-----------------------3.退出系统----------------------------")
-		fmt.Println("-----------------------请选择（1~3）:----------------------------")
+		fmt.Println("-------------------欢迎登录 聊天房间系统 ---------------------")
+		fmt.Println("\t\t\t 1.登录聊天房间\t\t\t")
+		fmt.Println("\t\t\t 2.注册用户\t\t\t")
+		fmt.Println("\t\t\t 3.退出聊天系统\t\t\t")
+		fmt.Println("请输入1~3:")
 		fmt.Scanln(&key)
 		switch key {
 		case 1:
-			fmt.Println("登录聊天室")
-			fmt.Println("请输入 id：")
-			fmt.Scanln(&userID)
-			fmt.Println("请输入 密码：")
-			fmt.Scanln(&userPwd)
+			fmt.Println("请输入 用户id:")
+			fmt.Scanf("%s\n", &userID)
+			fmt.Println("请输入 用户密码：")
+			fmt.Scanf("%s\n", &userPwd)
 			err := login(userID, userPwd)
 			if err != nil {
-				fmt.Println("登录失败")
+				fmt.Println("登录失败 err = ", err)
 			} else {
-				fmt.Println("登录成功")
+				fmt.Println("登录成功 err = ", err)
 			}
 		case 2:
 		case 3:
