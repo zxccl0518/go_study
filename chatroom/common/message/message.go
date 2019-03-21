@@ -14,7 +14,7 @@ type Message struct {
 }
 
 type LoginMessage struct {
-	UserID   string `json: "userID"`
+	UserID   int    `json: "userID"`
 	UserPwd  string `json: "userPwd"`
 	UserName string `json: "userName"`
 }
@@ -25,6 +25,12 @@ type LoginResMessage struct {
 }
 
 type RigesterMes struct {
+	User User `json:"user"`
+}
+
+type RigisterResMes struct {
+	Code  int    `json:"code"` // 返回状态码400 表示该用户已经被占有了，200表示注册成功
+	Error string `json:"error"`
 }
 
 func (mes Message) Print() {

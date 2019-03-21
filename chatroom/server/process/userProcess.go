@@ -6,6 +6,7 @@ import (
 	"net"
 
 	"github.com/zxccl0518/go_study/chatroom/common/message"
+	"github.com/zxccl0518/go_study/chatroom/server/model"
 	"github.com/zxccl0518/go_study/chatroom/server/utils"
 )
 
@@ -30,17 +31,36 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 
 	// 2. 再声明一个 LoginResMes
 	var loginResMes message.LoginResMessage
-
-	// 如果用户的id为100  密码为123456，我们认为合法，否则不合法。
-	if loginMes.UserID == "100" && loginMes.UserPwd == "123456" {
-		//合法
-		loginResMes.Code = 200
+	// 我们需要到redis数据库完成验证。
+	// 使用modelMyUserDao 到redis去验证。
+	_, err = model.MyUserDao.Login(loginMes.UserID, loginMes.UserPwd)
+	if err != nil {
+		if err == model.ERROR_USER_NOT_EXISTS {
+			loginResMes.Code = 500
+			// 这里我们先设置成功，然后我们再 根绝具体的信息返回具体的
+			// loginResMes.Err = "该用户不存在，请注册在使用。"
+			loginResMes.Err = err.Error()
+		} else if err == model.ERROR_USER_PWD {
+			loginResMes.Code = 403
+			loginResMes.Err = err.Error()
+		} else {
+			loginResMes.Code = 505
+			loginResMes.Err = "服务器内部错误。"
+		}
 	} else {
-		// 不合法
-		loginResMes.Code = 500
-		// loginResMes.Err = errors.New("该用户不存在，请注册在使用。 ")
-		loginResMes.Err = "该用户不存在，请注册在使用。"
+		loginResMes.Code = 200
+		loginResMes.Err = "登录成功。"
 	}
+	// // 如果用户的id为100  密码为123456，我们认为合法，否则不合法。
+	// if loginMes.UserID == "100" && loginMes.UserPwd == "123456" {
+	// 	//合法
+	// 	loginResMes.Code = 200
+	// } else {
+	// 	// 不合法
+	// 	loginResMes.Code = 500
+	// 	// loginResMes.Err = errors.New("该用户不存在，请注册在使用。 ")
+	// 	loginResMes.Err = "该用户不存在，请注册在使用。"
+	// }
 
 	// 将LoginResMes 序列化
 	data, err := json.Marshal(loginResMes)

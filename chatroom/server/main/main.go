@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"net"
+	"time"
+
+	"github.com/zxccl0518/go_study/chatroom/server/model"
 )
 
 // func readPkg(conn net.Conn) (mes message.Message, err error) {
@@ -133,26 +136,6 @@ func processFunc(conn net.Conn) {
 	// 这里需要延时关闭
 	defer conn.Close()
 
-	// 循环的接收客户发送的消息。
-	// for {
-	// 	// 这里我们阿静读取数据包，直接封装成一个函数readPkg，返回Message,Err
-	// 	mes, err := readPkg(conn)
-	// 	if err != nil {
-	// 		if err == io.EOF {
-	// 			fmt.Println("客户端断开连接---")
-	// 			return
-	// 		}
-
-	// 		fmt.Println("读取客户端 传过来的登陆消息失败，c错误原因非客户端掉线。 err = ", err)
-	// 		return
-	// 	}
-
-	// 	err = ServerProcessMes(conn, &mes)
-	// 	if err != nil {
-	// 		fmt.Println(" 服务器解析 消息失败 err= ", err)
-	// 	}
-	// }
-
 	// 这里调用总控,创建一个结构体。
 	processor := &Processor{
 		Conn: conn,
@@ -162,6 +145,21 @@ func processFunc(conn net.Conn) {
 		fmt.Println("客户端与服务器之间的通讯协程出错 err = ", err)
 		return
 	}
+}
+
+//  系统自动调用init 初始化函数。
+func init() {
+	// 当服务器启动时，我们就去初始化 redis 的连接池。
+	initPool("localhost:6379", 16, 0, time.Second)
+	initUserDao()
+}
+
+// 这里我们编写一个函数，完成对UserDao的初始化任务。
+func initUserDao() {
+	// 这里的pool 本身就是一个全局的变量。
+	// 这里需要注意的是 一个初始化的顺序。
+	// initPool 在initUserDao 后面。
+	model.MyUserDao = model.NewUserDao(pool)
 }
 
 func main() {

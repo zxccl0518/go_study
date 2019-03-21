@@ -1,12 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+
+	"github.com/zxccl0518/go_study/chatroom/client/process"
+)
 
 func main() {
 	var key int
-	var userID string
+	var userID int
 	var userPwd string
-
+	// var loop = true
 	for {
 		fmt.Println("-------------------欢迎登录 聊天房间系统 ---------------------")
 		fmt.Println("\t\t\t 1.登录聊天房间\t\t\t")
@@ -17,17 +22,19 @@ func main() {
 		switch key {
 		case 1:
 			fmt.Println("请输入 用户id:")
-			fmt.Scanf("%s\n", &userID)
+			fmt.Scanf("%d\n", &userID)
 			fmt.Println("请输入 用户密码：")
 			fmt.Scanf("%s\n", &userPwd)
-			login(userID, userPwd)
-			// if err != nil {
-			// 	fmt.Println("登录失败 err = ", err)
-			// } else {
-			// 	fmt.Println("登录成功 err = ", err)
-			// }
+
+			// 创建结构体，完成登录的功能。
+			up := &process.UserProcess{}
+			up.Login(userID, userPwd)
+			// loop = false
 		case 2:
+			// loop = false
 		case 3:
+			os.Exit(0)
+			break
 		default:
 		}
 	}

@@ -10,7 +10,7 @@ import (
 )
 
 // 用户登录函数
-func login(userID string, userPwd string) (err error) {
+func login(userID int, userPwd string) (err error) {
 	conn, err := net.Dial("tcp", "0.0.0.0:8887")
 	if err != nil {
 		fmt.Println("拨号，连接服务器失败 err = ", err)
