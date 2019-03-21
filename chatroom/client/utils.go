@@ -10,21 +10,6 @@ import (
 )
 
 func writePkg(conn net.Conn, data []byte) (err error) {
-	// var loginResMes message.LoginResMessage
-	// loginResMes.Code = 200
-	// loginResMes.Err = nil
-
-	// data, err := json.Marshal(loginResMes)
-	// if err != nil {
-	// 	fmt.Println("序列化 失败 err = ", err)
-	// 	return
-	// }
-
-	// _, err = conn.Write(data)
-	// if err != nil {
-	// 	fmt.Println("服务器 返回给客户端 消息失败。。。")
-	// 	return
-	// }
 
 	var pkgLen = uint32(len(data))
 	var buf [4]byte

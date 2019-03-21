@@ -86,9 +86,9 @@ func login(userID string, userPwd string) (err error) {
 	var loginResMes message.LoginResMessage
 	err = json.Unmarshal([]byte(mes.Data), &loginResMes)
 	if loginResMes.Code == 200 {
-		fmt.Println("登录成功 login err = ", err)
+		fmt.Println("登录成功 ")
 	} else {
-		fmt.Println("登录失败 loginResMes.Error = ", err)
+		fmt.Println("登录失败 loginResMes.Error = ", loginResMes.Err)
 	}
 
 	return

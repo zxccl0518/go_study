@@ -20,12 +20,12 @@ func main() {
 			fmt.Scanf("%s\n", &userID)
 			fmt.Println("请输入 用户密码：")
 			fmt.Scanf("%s\n", &userPwd)
-			err := login(userID, userPwd)
-			if err != nil {
-				fmt.Println("登录失败 err = ", err)
-			} else {
-				fmt.Println("登录成功 err = ", err)
-			}
+			login(userID, userPwd)
+			// if err != nil {
+			// 	fmt.Println("登录失败 err = ", err)
+			// } else {
+			// 	fmt.Println("登录成功 err = ", err)
+			// }
 		case 2:
 		case 3:
 		default:
