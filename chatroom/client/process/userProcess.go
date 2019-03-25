@@ -96,3 +96,73 @@ func (this *UserProcess) Login(userID int, userPwd string) (err error) {
 
 	return
 }
+
+// 注册 用户
+func (this *UserProcess) Rigister(userID int, userPwd, userName string) (err error) {
+	conn, err := net.Dial("tcp", "0.0.0.0:8887")
+	if err != nil {
+		fmt.Println("拨号，连接服务器失败 err = ", err)
+		return err
+	}
+
+	var mes message.Message
+	mes.Type = message.RigisterMesType
+	var rigisterMes = message.RigesterMes{}
+	// rigisterMes.UserID = userID
+	// rigisterMes.UserPwd = userPwd
+	// rigisterMes.userName = userName
+	rigisterMes.User.UserID = userID
+	rigisterMes.User.UserPwd = userPwd
+	rigisterMes.User.UserName = userName
+
+	// 序列化 rigisterMes结构体
+	data, err := json.Marshal(rigisterMes)
+	if err != nil {
+		fmt.Println("注册结构体的信息 序列化失败")
+		return
+	}
+	mes.Data = string(data)
+
+	var buf [4]byte
+	var pkgLen = uint32(len(data))
+	binary.BigEndian.PutUint32(buf[:4], pkgLen)
+
+	tf := &utils.Transfer{
+		Conn: conn,
+	}
+	err = tf.WritePkg(buf[0:4])
+	if err != nil {
+		fmt.Println("序列化失败。")
+	}
+
+	data, err = json.Marshal(mes)
+	if err != nil {
+		fmt.Println("反 序列化 m注册用的mes失败")
+		return
+	}
+	err = tf.WritePkg(data)
+	if err != nil {
+		fmt.Println(" 发送注册信息失败。")
+		return
+	}
+
+	mes, err = tf.ReadPkg()
+	if err != nil {
+		fmt.Println("读取 服务器 传送回来的消息失败 err = ", err)
+		return
+	}
+
+	var rigisterResMes message.RigisterResMes
+	err = json.Unmarshal([]byte(mes.Data), &rigisterResMes)
+	if err != nil {
+		fmt.Println("反 序列化失败")
+		return
+	}
+
+	if rigisterResMes.Code == 200 {
+		fmt.Println("注册成功, 重新登录即可")
+	} else {
+		fmt.Println("注册 失败。err = ", err)
+	}
+	return
+}

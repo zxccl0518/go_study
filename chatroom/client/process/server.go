@@ -32,7 +32,6 @@ func ShowMenu() {
 		os.Exit(0)
 	default:
 	}
-<<<<<<< HEAD
 }
 
 // 和服务器端保持通讯.
@@ -54,7 +53,4 @@ func serverProcessMes(conn net.Conn) {
 		// 如果读取到了，又是下一步处理逻辑。
 		fmt.Printf("mes = %s \n", mes)
 	}
-=======
-
->>>>>>> dfb43143a42c3be6a91cf6afdfedde19ce523a30
 }
