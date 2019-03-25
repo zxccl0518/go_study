@@ -11,6 +11,7 @@ func main() {
 	var key int
 	var userID int
 	var userPwd string
+	var usrName string
 	// var loop = true
 	for {
 		fmt.Println("-------------------欢迎登录 聊天房间系统 ---------------------")
@@ -31,6 +32,14 @@ func main() {
 			up.Login(userID, userPwd)
 			// loop = false
 		case 2:
+			fmt.Println("请输入用户id")
+			fmt.Scanf("%d\n", &userID)
+			fmt.Printf("请输入 用户的密码:")
+			fmt.Scanf("%s\n", &userPwd)
+			fmt.Println("请输入用户的名字：")
+			fmt.Scanf("%s\n", &usrName)
+			up := &process.UserProcess{}
+			up.Rigister(userID, userPwd, usrName)
 			// loop = false
 		case 3:
 			os.Exit(0)

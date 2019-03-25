@@ -150,7 +150,7 @@ func processFunc(conn net.Conn) {
 //  系统自动调用init 初始化函数。
 func init() {
 	// 当服务器启动时，我们就去初始化 redis 的连接池。
-	initPool("localhost:6379", 16, 0, time.Second)
+	initPool("localhost:6379", 16, 0, 300*time.Second)
 	initUserDao()
 }
 

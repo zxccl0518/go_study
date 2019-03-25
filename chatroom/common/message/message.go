@@ -3,9 +3,10 @@ package message
 import "fmt"
 
 const (
-	LoginMesType    = "loginType"
-	LoginResMesType = "loginResType"
-	RigisterMesType = "rigisterType"
+	LoginMesType       = "loginType"
+	LoginResMesType    = "loginResType"
+	RigisterMesType    = "rigisterType"
+	RigisterResMesType = "rigisterResType"
 )
 
 type Message struct {
@@ -14,9 +15,9 @@ type Message struct {
 }
 
 type LoginMessage struct {
-	UserID   int    `json: "userID"`
-	UserPwd  string `json: "userPwd"`
-	UserName string `json: "userName"`
+	UserID   int    `json:"userID"`
+	UserPwd  string `json:"userPwd"`
+	UserName string `json:"userName"`
 }
 
 type LoginResMessage struct {
@@ -24,7 +25,7 @@ type LoginResMessage struct {
 	Err  string `json:"err"`
 }
 
-type RigesterMes struct {
+type RigisterMes struct {
 	User User `json:"user"`
 }
 

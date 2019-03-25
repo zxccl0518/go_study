@@ -65,7 +65,7 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 	// 将LoginResMes 序列化
 	data, err := json.Marshal(loginResMes)
 	if err != nil {
-		fmt.Println("序列化失败。 err = ", err)
+		fmt.Println("process包，ServerProcessLogin() --- 序列化失败。 err = ", err)
 	}
 
 	// 4.将data 赋值给resMes结构体
@@ -74,7 +74,7 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 	// 5。对resMes进行序列化
 	data, err = json.Marshal(resMes)
 	if err != nil {
-		fmt.Println("json.Marshal fail err = ", err)
+		fmt.Println("process包，ServerProcessLogin() --- json.Marshal fail err = ", err)
 		return
 	}
 
@@ -85,5 +85,56 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 	}
 
 	err = tf.WritePkg(data)
+	return
+}
+
+// 注册用户。
+func (this *UserProcess) ServerProcessRigister(mes *message.Message) (err error) {
+	var rigisterMes message.RigisterMes
+
+	err = json.Unmarshal([]byte(mes.Data), &rigisterMes)
+	if err != nil {
+		fmt.Println("process包，ServerProcessRigister() --- 注册信息 反序列化失败。 err = ", err)
+		return
+	}
+
+	fmt.Println("打印 用户注册的信息 ------------------------")
+	fmt.Printf("userID:%d, userPwd:%s, userName:%s\n", rigisterMes.User.UserID, rigisterMes.User.UserPwd, rigisterMes.User.UserName)
+
+	var resMes message.Message
+	resMes.Type = message.RigisterMesType
+	var rigisterResMes message.RigisterResMes
+	err = model.MyUserDao.Rigister(&rigisterMes)
+	if err != nil {
+		if err == model.ERROR_USER_EXISTS {
+			fmt.Println("用户已经存在，注册失败 err = ", err.Error())
+			rigisterResMes.Code = 505
+			rigisterResMes.Error = model.ERROR_USER_EXISTS.Error()
+		} else {
+			rigisterResMes.Code = 506
+			rigisterResMes.Error = "注册发生错误。"
+		}
+	} else {
+		rigisterResMes.Code = 200
+	}
+
+	data, err := json.Marshal(rigisterResMes)
+	if err != nil {
+		fmt.Println("process包，ServerProcessRigister() --- 序列化失败。")
+		return
+	}
+	resMes.Data = string(data)
+
+	data, err = json.Marshal(resMes)
+	if err != nil {
+		fmt.Println("process包，ServerProcessRigister() --- 序列化失败 err= ", err)
+		return
+	}
+
+	tf := &utils.Transfer{
+		Conn: this.Conn,
+	}
+	tf.WritePkg(data)
+
 	return
 }

@@ -30,7 +30,14 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 			fmt.Println("处理登录失败 ... ")
 		}
 	case message.RigisterMesType:
-
+		// 创建 userProcess 实例。
+		userProcess := &process.UserProcess{
+			Conn: this.Conn,
+		}
+		err = userProcess.ServerProcessRigister(mes)
+		if err != nil {
+			fmt.Println("用户注册 失败。 err = ", err)
+		}
 	default:
 		// 消息类型不存在
 		fmt.Println("消息类型不存在，无法处理...s")

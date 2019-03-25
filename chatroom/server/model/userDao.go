@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/zxccl0518/go_study/chatroom/common/message"
+
 	"github.com/garyburd/redigo/redis"
 )
 
@@ -67,6 +69,33 @@ func (this *UserDao) Login(userID int, userPwd string) (user *User, err error) {
 	// 到了这步，证明用户是获取到了，但是不知道密码是否正确。
 	if user.UserPwd != userPwd {
 		err = ERROR_USER_PWD
+		return
+	}
+
+	return
+}
+
+func (this *UserDao) Rigister(user *message.RigisterMes) (err error) {
+	conn := this.pool.Get()
+	defer conn.Close()
+
+	_, err = this.getUserByID(conn, user.User.UserID)
+	if err == nil {
+		fmt.Println("此时 用户已经存在。")
+		return
+	}
+
+	// 测试说明id在redis中还没有，则允许完成注册
+	data, err := json.Marshal(user)
+	if err != nil {
+		fmt.Println("Rigister 序列化 用户注册信息 失败。")
+		return
+	}
+
+	// 向 数据库中写入注册信息
+	_, err = conn.Do("HSET", "users", user.User.UserID, string(data))
+	if err != nil {
+		fmt.Println("register 向redis写入数据失败。 err = ", err)
 		return
 	}
 
