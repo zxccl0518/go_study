@@ -18,6 +18,7 @@ type UserProcess struct {
 // 给关联一个用户登录的方法。
 // 用户登录函数
 func (this *UserProcess) Login(userID int, userPwd string) (err error) {
+
 	conn, err := net.Dial("tcp", "0.0.0.0:8887")
 	if err != nil {
 		fmt.Println("拨号，连接服务器失败 err = ", err)
@@ -58,6 +59,7 @@ func (this *UserProcess) Login(userID int, userPwd string) (err error) {
 	// 发送登录消息 本身
 	// fmt.Println("给服务器发送的登录信息的长度 = pkglen = ", pkdLen)
 	fmt.Println("将发送给服务器的登录消息序列化后的string = ", string(data))
+
 	n, err = conn.Write(data)
 	if err != nil || n != int(pkdLen) {
 		fmt.Println("发送 登录信息失败 err = ", err)
@@ -68,6 +70,7 @@ func (this *UserProcess) Login(userID int, userPwd string) (err error) {
 	tf := &utils.Transfer{
 		Conn: conn,
 	}
+
 	mes, err = tf.ReadPkg()
 	if err != nil {
 		fmt.Println(" 读取数据cuowu ")
@@ -86,6 +89,7 @@ func (this *UserProcess) Login(userID int, userPwd string) (err error) {
 		for {
 			ShowMenu()
 		}
+
 	} else {
 		fmt.Println("登录失败 loginResMes.Error = ", loginResMes.Err)
 	}
