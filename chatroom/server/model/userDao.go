@@ -86,13 +86,14 @@ func (this *UserDao) Rigister(user *message.RigisterMes) (err error) {
 	}
 
 	// 测试说明id在redis中还没有，则允许完成注册
-	data, err := json.Marshal(user)
+	data, err := json.Marshal(user.User)
 	if err != nil {
 		fmt.Println("Rigister 序列化 用户注册信息 失败。")
 		return
 	}
 
 	// 向 数据库中写入注册信息
+	fmt.Println("注册成功，想数据库写入数据之前 查看数据 data = ", string(data))
 	_, err = conn.Do("HSET", "users", user.User.UserID, string(data))
 	if err != nil {
 		fmt.Println("register 向redis写入数据失败。 err = ", err)

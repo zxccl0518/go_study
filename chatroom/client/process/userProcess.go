@@ -85,6 +85,13 @@ func (this *UserProcess) Login(userID int, userPwd string) (err error) {
 		// 可以接受并显示在 客户端。
 		go serverProcessMes(conn)
 
+		for _, v := range loginResMes.UsersID {
+			if v == loginMes.UserID {
+				continue
+			}
+			fmt.Println("当前在线的用户 userID = ", v)
+		}
+
 		// 1.显示我们登录成功的菜单[循环]。
 		for {
 			ShowMenu()
@@ -145,12 +152,14 @@ func (this *UserProcess) Rigister(userID int, userPwd, userName string) (err err
 	err = tf.WritePkg(data)
 	if err != nil {
 		fmt.Println("process包，Rigister() ---  发送注册信息失败。")
+
 		return
 	}
 
 	mes, err = tf.ReadPkg()
 	if err != nil {
 		fmt.Println("process包，Rigister() --- 读取 服务器 传送回来的消息失败 err = ", err)
+
 		return
 	}
 

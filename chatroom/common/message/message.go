@@ -21,8 +21,9 @@ type LoginMessage struct {
 }
 
 type LoginResMessage struct {
-	Code int    `json:"code"`
-	Err  string `json:"err"`
+	Code    int `json:"code"`
+	UsersID []int
+	Err     string `json:"err"`
 }
 
 type RigisterMes struct {
