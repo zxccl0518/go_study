@@ -145,12 +145,14 @@ func (this *UserProcess) Rigister(userID int, userPwd, userName string) (err err
 	err = tf.WritePkg(data)
 	if err != nil {
 		fmt.Println("process包，Rigister() ---  发送注册信息失败。")
+
 		return
 	}
 
 	mes, err = tf.ReadPkg()
 	if err != nil {
 		fmt.Println("process包，Rigister() --- 读取 服务器 传送回来的消息失败 err = ", err)
+
 		return
 	}
 

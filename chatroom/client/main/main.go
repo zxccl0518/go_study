@@ -39,6 +39,7 @@ func main() {
 			fmt.Println("请输入用户的名字：")
 			fmt.Scanf("%s\n", &usrName)
 			up := &process.UserProcess{}
+
 			up.Rigister(userID, userPwd, usrName)
 			// loop = false
 		case 3:
