@@ -1,9 +1,12 @@
 package process
 
 import (
+	"encoding/json"
 	"fmt"
 	"net"
 	"os"
+
+	"github.com/zxccl0518/go_study/chatroom/common/message"
 
 	"github.com/zxccl0518/go_study/chatroom/client/utils"
 )
@@ -52,5 +55,26 @@ func serverProcessMes(conn net.Conn) {
 
 		// 如果读取到了，又是下一步处理逻辑。
 		fmt.Printf("mes = %s \n", mes)
+		switch mes.Type {
+		case message.NotifyUserStatusMesType:
+			// 有人上线了
+			//1. 取出NotifyUserStatusMes
+			//2. 把这个用户的信息，状态 保存到客户端的Map   map[int]User中
+
+			// 将 消息反序列化
+			var notifyUsreStatusMes message.NotifyUserStatusMes
+			err = json.Unmarshal([]byte(mes.Data), &notifyUsreStatusMes)
+			if err != nil {
+				fmt.Println("反序列化失败")
+				return
+			}
+			// 更新 onlineUsers map
+			updateUserstatus(&notifyUsreStatusMes)
+
+			// 显示当前所有在线的好友
+			outputOnlineUser()
+		default:
+			fmt.Printf("服务器端 返回了未知的消息类型。")
+		}
 	}
 }

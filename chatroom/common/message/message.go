@@ -3,10 +3,18 @@ package message
 import "fmt"
 
 const (
-	LoginMesType       = "loginType"
-	LoginResMesType    = "loginResType"
-	RigisterMesType    = "rigisterType"
-	RigisterResMesType = "rigisterResType"
+	LoginMesType            = "loginType"
+	LoginResMesType         = "loginResType"
+	RigisterMesType         = "rigisterType"
+	RigisterResMesType      = "rigisterResType"
+	NotifyUserStatusMesType = "NotifyUserStatusMesType"
+)
+
+// 这里我们定义几个用户的状态常量。
+const (
+	UserOnline = iota
+	UserOffline
+	UserBusyStatus
 )
 
 type Message struct {
@@ -33,6 +41,12 @@ type RigisterMes struct {
 type RigisterResMes struct {
 	Code  int    `json:"code"` // 返回状态码400 表示该用户已经被占有了，200表示注册成功
 	Error string `json:"error"`
+}
+
+// 为了配合服务器推送用户状态变化的消息
+type NotifyUserStatusMes struct {
+	UserID int `json:"userID`  // 用户的id
+	Status int `json:"status"` // 用户的状态。
 }
 
 func (mes Message) Print() {

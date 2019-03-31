@@ -89,7 +89,13 @@ func (this *UserProcess) Login(userID int, userPwd string) (err error) {
 			if v == loginMes.UserID {
 				continue
 			}
-			fmt.Println("当前在线的用户 userID = ", v)
+			fmt.Println("登录的时候 显示当前在线的用户 userID = ", v)
+			// 客户端 onlineUsers 完成初始化
+			user := &message.User{
+				UserID:     v,
+				UserStatus: message.UserOnline,
+			}
+			onlineUsers[v] = user
 		}
 
 		// 1.显示我们登录成功的菜单[循环]。

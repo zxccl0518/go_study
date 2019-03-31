@@ -15,6 +15,57 @@ type UserProcess struct {
 	UserID int
 }
 
+// 编写通知所有在线的用户的方法.
+// userID要通知其他的在线用户，我上线
+func (this *UserProcess) NotifyOthersOnlineUser(userID int) {
+	fmt.Printf("服务器端 准备通知 客户端当前在线 客户 ， 注意当前登录客户 id = %d\n", userID)
+	//	遍历onlineUsers，然后一个一个的发送。
+	for id, up := range userMgr.onlineUsers {
+		fmt.Printf("循环遍历当前在线 客户，除去自己，客户id = %d\n", id)
+		if id == userID {
+			continue
+		}
+
+		fmt.Printf("循环遍历当前在线 客户，除去自己，将客户id为 = %d 发送个当前在线用户\n", id)
+
+		// 开始通知
+		up.NotifyMeOnline(userID)
+	}
+}
+
+func (this *UserProcess) NotifyMeOnline(userID int) {
+	// 组装我们的消息NotifyUserStatusMes
+	var mes message.Message
+	mes.Type = message.NotifyUserStatusMesType
+
+	var notifyUserStatusMes message.NotifyUserStatusMes
+	notifyUserStatusMes.UserID = userID
+	notifyUserStatusMes.Status = message.UserOnline
+
+	data, err := json.Marshal(notifyUserStatusMes)
+	if err != nil {
+		fmt.Println("NotifyMeOnline() struct notifyUserStatusMes json.Marshal err = ", err)
+		return
+	}
+
+	mes.Data = string(data)
+	data, err = json.Marshal(mes)
+	if err != nil {
+		fmt.Println("NotifyMeOnline() struct message json.Marshal err = ", err)
+		return
+	}
+
+	tf := &utils.Transfer{
+		Conn: this.Conn,
+	}
+
+	err = tf.WritePkg(data)
+	if err != nil {
+		fmt.Println("writePkg err = ", err)
+		return
+	}
+}
+
 // 编写一个 ServerProcessLogin函数，专门处理登录的请求
 func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 	// 核心代码
@@ -53,6 +104,8 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 		loginResMes.Err = "登录成功。"
 		this.UserID = loginMes.UserID
 		userMgr.AddOnlineUser(this)
+
+		this.NotifyOthersOnlineUser(loginMes.UserID)
 		for k := range userMgr.onlineUsers {
 			loginResMes.UsersID = append(loginResMes.UsersID, k)
 		}
