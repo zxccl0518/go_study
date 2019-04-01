@@ -80,6 +80,11 @@ func (this *UserProcess) Login(userID int, userPwd string) (err error) {
 	var loginResMes message.LoginResMessage
 	err = json.Unmarshal([]byte(mes.Data), &loginResMes)
 	if loginResMes.Code == 200 {
+		// 登录成功，初始化CurUser结构体。
+		CurUser.Conn = conn
+		CurUser.UserID = loginMes.UserID
+		CurUser.UserStatus = message.UserOnline
+
 		fmt.Println("登录成功 ")
 		// 这里我们还需要在客户端启动一个协程。该协程保持和服务器的通讯，如果服务器有数据推送给客户端。
 		// 可以接受并显示在 客户端。

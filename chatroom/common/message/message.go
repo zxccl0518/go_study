@@ -8,6 +8,7 @@ const (
 	RigisterMesType         = "rigisterType"
 	RigisterResMesType      = "rigisterResType"
 	NotifyUserStatusMesType = "NotifyUserStatusMesType"
+	SmsMesType              = "SmsMesType"
 )
 
 // 这里我们定义几个用户的状态常量。
@@ -48,6 +49,15 @@ type NotifyUserStatusMes struct {
 	UserID int `json:"userID`  // 用户的id
 	Status int `json:"status"` // 用户的状态。
 }
+
+// 增加一个SmsMes // 发送的消息
+type SmsMes struct {
+	Content string `json:"content"`
+	User           // 匿名结构体。
+}
+
+// type SmsReMes struct {
+// }
 
 func (mes Message) Print() {
 	fmt.Println("Message 结果提 print的方法。 --- ")

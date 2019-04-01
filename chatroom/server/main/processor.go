@@ -17,6 +17,9 @@ type Processor struct {
 //编写一个ServerProcessMes()函数
 // 功能：根据客户端发送消息种类不同，决定调用哪个函数来处理。
 func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
+	// 看看是否能接收到 客户端发送的群发的消息。
+	fmt.Println("server provessor mes = ", mes)
+
 	switch mes.Type {
 	case message.LoginMesType:
 		// 创建 userProcess 实例。

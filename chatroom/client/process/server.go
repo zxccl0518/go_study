@@ -1,6 +1,7 @@
 package process
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"net"
@@ -22,12 +23,23 @@ func ShowMenu() {
 	fmt.Println("\t\t\t 4.提出系统。\t\t\t")
 	fmt.Println("\t\t\t 请选择(1-4):")
 	var key int
+	// var content string
+
+	// 因为我们总会使用到SmsProcess实例，因此我们将其定义在switch外部.
+	smsProcess := &SmsProcess{}
 	fmt.Scanf("%d\n", &key)
 	switch key {
 	case 1:
 		fmt.Println("显示 在线用户列表")
+		outputOnlineUser()
 	case 2:
-		fmt.Println("发送消息")
+		fmt.Println("你想对大家说点什么:")
+		reader := bufio.NewReader(os.Stdin)
+		data, _, _ := reader.ReadLine()
+		// fmt.Scanln(&content)
+
+		// 这种方式，可以解决输入字符串中带空格的问题。
+		smsProcess.sendGroups(string(data))
 	case 3:
 		fmt.Println("信息列表")
 	case 4:
