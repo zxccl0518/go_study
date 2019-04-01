@@ -41,9 +41,16 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 		if err != nil {
 			fmt.Println("用户注册 失败。 err = ", err)
 		}
+	case message.SmsMesType:
+		smsProcess := &process.SmsProcess{}
+
+		err = smsProcess.SendGroupMes(mes)
+		if err != nil {
+			fmt.Println("服务器 转发群聊消息失败。 err = ", err)
+		}
 	default:
 		// 消息类型不存在
-		fmt.Println("消息类型不存在，无法处理...s")
+		fmt.Println("消息类型不存在，无法处理... mes.Type = ", mes.Type)
 	}
 
 	return

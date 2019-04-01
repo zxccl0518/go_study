@@ -66,7 +66,6 @@ func serverProcessMes(conn net.Conn) {
 		}
 
 		// 如果读取到了，又是下一步处理逻辑。
-		fmt.Printf("mes = %s \n", mes)
 		switch mes.Type {
 		case message.NotifyUserStatusMesType:
 			// 有人上线了
@@ -85,6 +84,17 @@ func serverProcessMes(conn net.Conn) {
 
 			// 显示当前所有在线的好友
 			outputOnlineUser()
+
+		case message.SmsMesType:
+			var smsMes message.SmsMes
+			err = json.Unmarshal([]byte(mes.Data), &smsMes)
+			if err != nil {
+				fmt.Println("接受服务器端转发的群聊消息失败 --- 反序列化失败 err = ", err)
+				return
+			}
+
+			content := fmt.Sprintf("用户id:%d 跟大家说 %v", smsMes.UserID, smsMes.Content)
+			fmt.Println(content)
 		default:
 			fmt.Printf("服务器端 返回了未知的消息类型。")
 		}
