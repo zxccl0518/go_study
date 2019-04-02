@@ -44,7 +44,7 @@ func (this *Transfer) ReadPkg() (mes message.Message, err error) {
 	// 技术就是一层窗户纸。 不弄清楚的话 永远都是个谜题。弄清楚了就如同 捅破窗户纸一般 简单。
 	err = json.Unmarshal(this.Buf[:n], &mes) // 这个位置一定要用 &mes 才会将序列化的内容反序列化到mes中。
 	if err != nil {
-		fmt.Println("反序列化 失败 err = ", err)
+		fmt.Println("client/utils.go ReadPkg() 反序列化 失败 err = ", err)
 		return
 	}
 

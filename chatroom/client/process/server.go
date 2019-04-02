@@ -20,7 +20,8 @@ func ShowMenu() {
 	fmt.Println("\t\t\t 1.显示在线用户列表\t\t\t")
 	fmt.Println("\t\t\t 2.发送消息。\t\t\t")
 	fmt.Println("\t\t\t 3.信息列表。\t\t\t")
-	fmt.Println("\t\t\t 4.提出系统。\t\t\t")
+	fmt.Println("\t\t\t 4.私人聊天。\t\t\t")
+	fmt.Println("\t\t\t 5.退出系统。\t\t\t")
 	fmt.Println("\t\t\t 请选择(1-4):")
 	var key int
 	// var content string
@@ -43,7 +44,31 @@ func ShowMenu() {
 	case 3:
 		fmt.Println("信息列表")
 	case 4:
-		fmt.Println("你 退出了体统")
+		fmt.Println("私聊系统，与个人单独聊天")
+		fmt.Print("请输入 私聊用户的 用户id:")
+		var userID int
+		var flag = false
+		fmt.Scanf("%d\n", &userID)
+		for id := range onlineUsers {
+			if id == userID {
+				flag = true
+				break
+			}
+		}
+
+		if flag == true {
+			fmt.Print("请输入 要发送的内容:")
+			newreader := bufio.NewReader(os.Stdin)
+			content, _, _ := newreader.ReadLine()
+
+			smsProcess := &SmsProcess{}
+			err := smsProcess.sendPrivateChat(string(content), userID)
+			if err != nil {
+				fmt.Println("发送私聊失败。 err = ", err)
+			}
+		}
+	case 5:
+		fmt.Println("你 退出了系统")
 		os.Exit(0)
 	default:
 	}
@@ -86,15 +111,21 @@ func serverProcessMes(conn net.Conn) {
 			outputOnlineUser()
 
 		case message.SmsMesType:
-			var smsMes message.SmsMes
-			err = json.Unmarshal([]byte(mes.Data), &smsMes)
-			if err != nil {
-				fmt.Println("接受服务器端转发的群聊消息失败 --- 反序列化失败 err = ", err)
-				return
-			}
+			// var smsMes message.SmsMes
+			// err = json.Unmarshal([]byte(mes.Data), &smsMes)
+			// if err != nil {
+			// 	fmt.Println("接受服务器端转发的群聊消息失败 --- 反序列化失败 err = ", err)
+			// 	return
+			// }
 
-			content := fmt.Sprintf("用户id:%d 跟大家说 %v", smsMes.UserID, smsMes.Content)
-			fmt.Println(content)
+			// content := fmt.Sprintf("用户id:%d 跟大家说 %v", smsMes.UserID, smsMes.Content)
+			// fmt.Println(content)s
+			smsMgr := &SmsMgr{}
+			smsMgr.outputGroupMes(&mes)
+		case message.SmsPrivateChatMesType:
+			fmt.Printf("客户端 用户id[%v]接收到 私聊 data = ", mes.Data)
+			smg := &SmsMgr{}
+			smg.OutPutPrivateChatMes(&mes)
 		default:
 			fmt.Printf("服务器端 返回了未知的消息类型。")
 		}

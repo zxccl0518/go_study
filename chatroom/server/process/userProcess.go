@@ -18,15 +18,15 @@ type UserProcess struct {
 // 编写通知所有在线的用户的方法.
 // userID要通知其他的在线用户，我上线
 func (this *UserProcess) NotifyOthersOnlineUser(userID int) {
-	fmt.Printf("服务器端 准备通知 客户端当前在线 客户 ， 注意当前登录客户 id = %d\n", userID)
+	// fmt.Printf("服务器端 准备通知 客户端当前在线 客户 ， 注意当前登录客户 id = %d\n", userID)
 	//	遍历onlineUsers，然后一个一个的发送。
 	for id, up := range userMgr.onlineUsers {
-		fmt.Printf("循环遍历当前在线 客户，除去自己，客户id = %d\n", id)
+		// fmt.Printf("循环遍历当前在线 客户，除去自己，客户id = %d\n", id)
 		if id == userID {
 			continue
 		}
 
-		fmt.Printf("循环遍历当前在线 客户，除去自己，将客户id为 = %d 发送个当前在线用户\n", id)
+		// fmt.Printf("循环遍历当前在线 客户，除去自己，将客户id为 = %d 发送个当前在线用户\n", id)
 
 		// 开始通知
 		up.NotifyMeOnline(userID)

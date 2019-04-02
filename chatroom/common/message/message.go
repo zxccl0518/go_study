@@ -1,6 +1,8 @@
 package message
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const (
 	LoginMesType            = "loginType"
@@ -9,6 +11,7 @@ const (
 	RigisterResMesType      = "rigisterResType"
 	NotifyUserStatusMesType = "NotifyUserStatusMesType"
 	SmsMesType              = "SmsMesType"
+	SmsPrivateChatMesType   = "SmsPrivateChatMesType"
 )
 
 // 这里我们定义几个用户的状态常量。
@@ -54,6 +57,12 @@ type NotifyUserStatusMes struct {
 type SmsMes struct {
 	Content string `json:"content"`
 	User           // 匿名结构体。
+}
+
+type SmsPrivateChatMes struct {
+	Content string
+	UserMe  User
+	UserYou User
 }
 
 // type SmsReMes struct {

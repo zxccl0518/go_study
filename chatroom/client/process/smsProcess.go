@@ -51,3 +51,33 @@ func (this *SmsProcess) sendGroups(content string) (err error) {
 
 	return
 }
+
+func (this *SmsProcess) sendPrivateChat(content string, userID int) (err error) {
+	var mes message.Message
+	mes.Type = message.SmsPrivateChatMesType
+
+	var smsMes message.SmsPrivateChatMes
+	smsMes.Content = content
+	smsMes.UserMe.UserID = CurUser.UserID
+	smsMes.UserMe.UserName = CurUser.UserName
+	smsMes.UserYou.UserID = userID
+	data, err := json.Marshal(smsMes)
+	if err != nil {
+		fmt.Println("json.Marshal() failer err = ", err)
+		return
+	}
+
+	mes.Data = string(data)
+	data, err = json.Marshal(mes)
+	if err != nil {
+		fmt.Println("json.Marshal() failer err = ", err)
+		return
+	}
+
+	tf := &utils.Transfer{
+		Conn: CurUser.Conn,
+	}
+	tf.WritePkg(data)
+
+	return
+}
