@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"strconv"
 )
 
 // 使用数组来模拟一个栈的使用。
@@ -35,6 +36,17 @@ func (this *Stack) Pop() (value int, err error) {
 	this.Top--
 
 	return value, nil
+}
+
+func (this *Stack) List() {
+	if this.Top == -1 {
+		fmt.Println("栈 为空，无法打印。")
+		return
+	}
+
+	for i := this.Top; i >= 0; i-- {
+		fmt.Printf("this.top = %d, value = %v\n", i, this.arr[i])
+	}
 }
 
 // 判断一个字符是不是运算符【+ - * /】。
@@ -92,7 +104,7 @@ func main() {
 	}
 
 	// 表达式。
-	exp := "3+2*6-2"
+	exp := "30+20*6-20/3+100"
 	// 定义一个index 帮助我们扫描exp。
 	index := 0
 	// 为了配合运算，我们定义需要的变量。
@@ -100,6 +112,7 @@ func main() {
 	num2 := 0
 	oper := 0
 	result := 0
+	keepNum := ""
 	for {
 		ch := exp[index : index+1]            // ch是一个字符串。只不过只有一个字符的字符串。
 		temp := int([]byte(ch)[0])            // 就是字符串对应的ASCII码
@@ -109,18 +122,33 @@ func main() {
 			if operatorStack.Top == -1 { // 空栈。
 				operatorStack.Push(temp)
 			} else {
-				if operatorStack.Priority(operatorStack.arr[operatorStack.Top]) >= operatorStack.arr[temp] {
+				if operatorStack.Priority(operatorStack.arr[operatorStack.Top]) >= operatorStack.Priority(temp) {
 					num1, _ = numberStack.Pop()
 					num2, _ = numberStack.Pop()
 					oper, _ = operatorStack.Pop()
 					result = operatorStack.Cal(num1, num2, oper)
 					numberStack.Push(result)
+					operatorStack.Push(temp)
 				} else {
 					operatorStack.Push(temp)
 				}
 			}
 		} else { // 说明是数字
-			numberStack.Push(temp)
+			// 处理多位数的思路
+			keepNum += ch
+			// 1.定义一个变量 keepNum string 做拼接。
+			// 2.每次 要向index的前面字符测试一下，看看是不是元运算符，然后处理。
+			if index >= len(exp)-1 {
+				// 说明已经扫描到字符串的最后了。
+				value, _ := strconv.ParseInt(keepNum, 10, 64)
+				numberStack.Push(int(value))
+			} else {
+				if numberStack.isOper(int([]byte(exp[index+1 : index+2])[0])) {
+					value, _ := strconv.ParseInt(keepNum, 10, 64)
+					numberStack.Push(int(value))
+					keepNum = ""
+				}
+			}
 		}
 
 		// 判断 index 是都已经扫描到了计算表达式的最后了。
@@ -132,7 +160,7 @@ func main() {
 	}
 
 	for {
-		if operatorStack.arr[operatorStack.Top] == -1 {
+		if operatorStack.Top <= -1 {
 			break
 		}
 		num1, _ = numberStack.Pop()
