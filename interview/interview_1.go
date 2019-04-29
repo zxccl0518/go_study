@@ -27,7 +27,7 @@ type student struct {
 	Age  int
 }
 
-// 演示 for range的遍历方式是 值拷贝。 但是若是传入的是引用类型的变量， 就会不一样。
+
 func Pase_student() {
 	m := make(map[string]*student)
 	stus := []student{
@@ -57,6 +57,7 @@ func main() {
 	//  defer 的用法。
 	// Go_defer()
 
+<<<<<<< HEAD
 	// Pase_student()
 
 	// 二叉树的创建。
@@ -69,4 +70,7 @@ func main() {
 	}
 	PreOrder(root)
 
+=======
+	Pase_student()
+>>>>>>> 9a1353f059a236638f4dc32dcd5d05dec79cd295
 }
