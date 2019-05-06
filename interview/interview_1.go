@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+
+	"github.com/zxccl0518/go_study/interview/closure"
+)
 
 // 测试 defer的调用顺序。
 func Go_defer() {
@@ -27,7 +32,6 @@ type student struct {
 	Age  int
 }
 
-
 func Pase_student() {
 	m := make(map[string]*student)
 	stus := []student{
@@ -53,24 +57,64 @@ func Pase_student() {
 	}
 }
 
+// 闭包函数测试。
+func closureTest() {
+	closureObject := closure.GetClosureInstance()
+
+	// 获取闭包函数。
+	c := closureObject.MakeSuffix(".jpg")
+
+	fmt.Printf("原文件名字是= %v, 返回的文件名字是 = %s \n", "今天测试", c("今天测试"))
+	fmt.Printf("原文件名字是= %v, 返回的文件名字是 = %s \n", "ceshi1", c("ceshi1"))
+	fmt.Printf("原文件名字是= %v, 返回的文件名字是 = %s \n\n", "ceshi2.jpg", c("ceshi2.jpg"))
+
+	mp3C := closureObject.MakeSuffix("mp3")
+	fmt.Printf("原文件名字是= %v, 返回的文件名字是 = %s \n", "ceshi 3", c("ceshi 3"))
+	fmt.Printf("原文件名字是= %v, 返回的文件名字是 = %s \n", "ceshi 4", mp3C("ceshi 4"))
+
+}
+
+// 遍历字符串,包括中文的字符串。
+func stringTravelTest() {
+	// str := "hello 北京，hello 上海，hello 沈阳，hello 辽阳。"
+	// strSlice := []rune(str)
+	// for i := 0; i < len(strSlice); i++ {
+	// 	fmt.Printf(" %c", strSlice[i])
+	// 	if strSlice[i] == '，' {
+	// 		fmt.Println()
+	// 	}
+	// }
+
+	// strconv.Atoi()测试
+	n, err := strconv.Atoi("123123123")
+	// n, err := strconv.Atoi("hello")
+	if err != nil {
+		fmt.Println("字符串 转换 int整型 失败 err = ", err)
+	} else {
+		fmt.Println("转换成功之后的结果是 = ", n)
+	}
+}
+
 func main() {
 	//  defer 的用法。
 	// Go_defer()
 
-<<<<<<< HEAD
 	// Pase_student()
 
 	// 二叉树的创建。
-	var root *Tree
-	t := Create(root, Item{89})
-	root = t
-	iarr := []int{1, 89, 44, 98, 54, 24, 96, 34, 74, 69, 96, 4, 0}
-	for _, v := range iarr {
-		create(root, Item{v})
-	}
-	PreOrder(root)
+	// var root *Tree
+	// t := Create(root, Item{89})
+	// root = t
+	// iarr := []int{1, 89, 44, 98, 54, 24, 96, 34, 74, 69, 96, 4, 0}
+	// for _, v := range iarr {
+	// 	create(root, Item{v})
+	// }
+	// PreOrder(root)
 
-=======
-	Pase_student()
->>>>>>> 9a1353f059a236638f4dc32dcd5d05dec79cd295
+	// Pase_student()
+
+	// closureTest()
+
+	// 字符串的遍历，包括中文的字符串。
+	stringTravelTest()
 }
