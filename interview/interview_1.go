@@ -27,6 +27,20 @@ func Go_defer() {
 	// panic: 触发异常
 }
 
+// 采用 defer+recover的方式捕获异常。
+func deferAndRecover() {
+	defer func() {
+		err := recover()
+		if err != nil {
+			fmt.Printf("系统 抛出异常 err = %v\n", err)
+		}
+	}()
+
+	n1, n2 := 10, 0
+	res := n1 / n2
+	fmt.Print("res = ", res)
+}
+
 type student struct {
 	Name string
 	Age  int
@@ -95,6 +109,18 @@ func stringTravelTest() {
 	}
 }
 
+// 切片的创建 demo测试。
+func sliceDemo() {
+	var sliceInt = make([]int, 5, 10)
+	fmt.Println("sliceInt = ", sliceInt)
+
+	sliceInt[0] = 10
+	sliceInt[3] = 101
+	// sliceInt[5] = 1011 // 这个时候回出现 越界的问题。因为已经超出了初始化的范围了。后面的递增的要append来增加。
+	sliceInt = append(sliceInt, 1011)
+	fmt.Println("sliceInt = ", sliceInt)
+}
+
 func main() {
 	//  defer 的用法。
 	// Go_defer()
@@ -116,5 +142,10 @@ func main() {
 	// closureTest()
 
 	// 字符串的遍历，包括中文的字符串。
-	stringTravelTest()
+	// stringTravelTest()
+
+	// deferAndRecover()
+
+	// 切片的测试代码。
+	sliceDemo()
 }
