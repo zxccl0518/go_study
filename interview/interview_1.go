@@ -121,6 +121,17 @@ func sliceDemo() {
 	fmt.Println("sliceInt = ", sliceInt)
 }
 
+// 指针练习.
+func pointerDemo() {
+	var intnum = 10
+	var intnum2 = &intnum // intnum2 是一个指针, 它存储的值 intnum的地址.指针自己也有地址.
+
+	*intnum2 = 20
+	fmt.Printf(" intnum1 = %v, intnum2 = %v \n", intnum, *intnum2)
+	fmt.Printf("intnum1 address = %v, intnum2 address = %v ,intnum2 value = %v \n ", &intnum, &intnum2, intnum2)
+	// &intnum 是取的变量的地址.  intnum2是指针,指针也是一个变量,他存储的值是一个地址.  &intnum2 是对指针变量去地址.
+}
+
 func main() {
 	//  defer 的用法。
 	// Go_defer()
@@ -147,5 +158,8 @@ func main() {
 	// deferAndRecover()
 
 	// 切片的测试代码。
-	sliceDemo()
+	// sliceDemo()
+
+	// 测试 指针.
+	// pointerDemo()
 }
